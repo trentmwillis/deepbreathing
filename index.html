@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Deep Breathing</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      align-items: center;
+      background-color: hsl(216, 33%, 97%);
+      color: hsl(201, 79%, 46%);
+      display: flex;
+      flex-direction: column;
+      font-family: "Nunito", sans-serif;
+      height: 100vh;
+      justify-content: space-between;
+      margin: 0;
+    }
+
+
+
+    header {
+      background: hsl(201, 79%, 46%);
+      color: hsl(216, 33%, 97%);
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin: 1rem;
+      letter-spacing: 0.2rem;
+      text-align: center;
+      text-transform: lowercase;
+
+      background: -webkit-linear-gradient(hsl(216, 33%, 97%), hsl(197, 92%, 61%));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+
+
+    main {
+      align-items: center;
+      background: hsl(201, 79%, 46%);
+      background-image:
+        /* TODO: Extract to SVG file */
+        url("data:image/svg+xml,%3Csvg width='400' height='400' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%231991d2' fill-opacity='0.15' fill-rule='evenodd'/%3E%3C/svg%3E"),
+        linear-gradient(to bottom, hsl(201, 79%, 46%), hsl(195, 100%, 85%));
+      display: flex;
+      flex: 1;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .box {
+      /* TODO: Toggle animation by url hash */
+      /* animation: breathe 10s ease-in-out infinite; */
+      /* animation: breathe 20s ease-in-out infinite; */
+      animation: equal 8s ease-in-out infinite;
+      box-shadow: 0 14px 28px hsla(201, 79%, 46%, 0.25), 0 10px 10px hsla(201, 79%, 46%, 0.22);
+    }
+
+    @keyframes fourSevenEight {
+      0% {
+        background: hsl(203, 87%, 34%);
+        border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        height: 100px;
+        width: 100px;
+      }
+
+      20% {
+        background: hsl(201, 79%, 46%);
+        border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+        height: min(400px, 90vw);
+        width: min(400px, 90vw);
+      }
+
+      55% {
+        background: hsl(195, 100%, 85%);
+        border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+        height: min(400px, 90vw);
+        width: min(400px, 90vw);
+      }
+
+      95%, 100% {
+        background: hsl(203, 87%, 34%);
+        border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        height: 100px;
+        width: 100px;
+      }
+    }
+
+    @keyframes equal {
+      0% {
+        background: hsl(203, 87%, 34%);
+        border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        height: 100px;
+        width: 100px;
+      }
+
+      45%, 50% {
+        background: hsl(201, 79%, 46%);
+        border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+        height: min(400px, 90vw);
+        width: min(400px, 90vw);
+      }
+
+      95%, 100% {
+        background: hsl(203, 87%, 34%);
+        border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        height: 100px;
+        width: 100px;
+      }
+    }
+
+
+
+
+    footer {
+      background: hsl(216, 33%, 97%);
+      background: linear-gradient(hsl(216, 33%, 97%), hsl(210, 16%, 82%));
+      box-shadow: 0 -14px 28px hsla(201, 79%, 46%, 0.25), 0 -10px 10px hsla(201, 79%, 46%, 0.22);
+      padding: 2rem;
+      position: relative;
+      width: 100%;
+    }
+
+    footer > img {
+      height: 2rem;
+      left: 0;
+      position: absolute;
+      top: -2rem;
+      width: 100%;
+    }
+
+    footer ul {
+      display: flex;
+      justify-content: space-between;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    footer label {
+      align-items: center;
+      border: 1px solid hsl(201, 79%, 46%);
+      border-radius: 100%;
+      display: flex;
+      height: 4rem;
+      justify-content: center;
+      padding: 0.5rem;
+      text-align: center;
+      transition: background-color 0.5s, color 0.5s;
+      width: 4rem;
+    }
+
+    footer input[type="radio"] {
+      display: none;
+    }
+
+    footer input[type="radio"]:checked + label {
+      background: hsl(201, 79%, 46%);
+      color: hsl(216, 33%, 97%);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Deep Breathing</h1>
+  </header>
+
+  <main>
+    <div class="box"></div>
+  </main>
+
+  <footer>
+    <img src="./curve.svg">
+
+    <ul>
+      <li>
+        <input type="radio" id="478" name="technique" value="478">
+        <label for="478">4/7/8 Full</label>
+      </li>
+
+      <li>
+        <input type="radio" id="478-half" name="technique" value="478-half" checked>
+        <label for="478-half">4/7/8 Half</label>
+      </li>
+
+      <li>
+        <input type="radio" id="equal" name="technique" value="equal">
+        <label for="equal">Equal</label>
+      </li>
+    </ul>
+  </footer>
+</body>
+</html>
