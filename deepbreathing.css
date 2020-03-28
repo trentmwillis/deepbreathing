@@ -1,0 +1,160 @@
+/**
+ * The Basics
+ */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  align-items: center;
+  background-color: hsl(216, 33%, 97%);
+  color: hsl(201, 79%, 46%);
+  display: flex;
+  flex-direction: column;
+  font-family: "Nunito", sans-serif;
+  height: 100%;
+  justify-content: space-between;
+  margin: 0;
+}
+
+/**
+ * The Titlebar
+ */
+
+.titlebar {
+  background: hsl(201, 79%, 46%);
+  width: 100%;
+}
+
+.title {
+  color: hsl(216, 33%, 97%);
+  font-size: 1.5rem;
+  letter-spacing: 0.2rem;
+  margin: 1rem;
+  text-align: center;
+  text-transform: lowercase;
+
+  /* Webkit-specific styles for gradient text */
+  background: -webkit-linear-gradient(hsl(216, 33%, 97%), hsl(197, 92%, 61%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/**
+ * The Main Event
+ */
+
+.stage {
+  align-items: center;
+  background: hsl(201, 79%, 46%);
+  background-image:
+    url("./background.svg"),
+    linear-gradient(to bottom, hsl(201, 79%, 46%), hsl(195, 100%, 85%));
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  width: 100%;
+}
+
+.animatron {
+  /* These get set in JS land */
+  animation: var(--animation) var(--duration) ease-in-out infinite;
+  box-shadow:
+    0 14px 28px hsla(201, 79%, 46%, 0.25),
+    0 10px 10px hsla(201, 79%, 46%, 0.22);
+  transform: translateZ(0);
+}
+
+/**
+ * The Controls
+ */
+
+.control-panel {
+  background: linear-gradient(hsl(216, 33%, 97%), hsl(210, 16%, 82%));
+  box-shadow:
+    0 -14px 28px hsla(201, 79%, 46%, 0.25),
+    0 -10px 10px hsla(201, 79%, 46%, 0.25);
+  padding: 2rem 2rem 3rem;
+  position: relative;
+  width: 100%;
+}
+
+.control-panel_decoration {
+  height: 2rem;
+  left: 0;
+  position: absolute;
+  top: -2rem;
+  width: 100%;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-evenly;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.control {
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: 100%;
+  box-shadow:
+    9px 9px 9px rgba(0, 0, 0, 0.06),
+    -9px -9px 9px rgba(255, 255, 255, 0.6),
+    inset 5px 5px 5px rgba(0, 0, 0, 0.06),
+    inset -5px -5px 5px rgba(255, 255, 255, 0.2);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  height: 4rem;
+  justify-content: center;
+  padding: 0.5rem;
+  position: relative;
+  transition: background-color 0.5s, color 0.5s;
+  width: 4rem;
+}
+
+.control:focus {
+  outline: none;
+}
+
+.control::before {
+  background-color: hsl(197, 92%, 61%);
+  border-radius: 50%;
+  box-shadow:
+    inset 1px 2px 4px hsl(195, 97%, 75%),
+    inset -1px -2px 4px hsl(199, 84%, 55%);
+  content: '';
+  height: 3.7rem;
+  left: 50%;
+  margin: -1.85rem 0 0 -1.85rem;
+  position: absolute;
+  top: 50%;
+  width: 3.7rem;
+}
+
+.control:focus::before,
+.control:hover::before {
+  background-color: hsl(199, 84%, 55%);
+}
+
+.control:active::before,
+.control.is-active::before {
+  background-color: hsl(199, 84%, 55%);
+  box-shadow:
+    inset -1px -2px 4px hsl(197, 92%, 61%),
+    inset 1px 2px 4px hsl(201, 79%, 46%);
+}
+
+.control_text {
+  line-height: 1.2;
+  position: relative;
+}

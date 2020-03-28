@@ -1,0 +1,52 @@
+@keyframes fourSevenEight {
+  0% {
+    background: hsl(203, 87%, 34%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    height: 100px;
+    width: 100px;
+  }
+
+  20% {
+    background: hsl(201, 79%, 46%);
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+    height: min(400px, 90vw);
+    width: min(400px, 90vw);
+  }
+
+  55% {
+    background: hsl(195, 100%, 85%);
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+    height: min(400px, 90vw);
+    width: min(400px, 90vw);
+  }
+
+  95%, 100% {
+    background: hsl(203, 87%, 34%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    height: 100px;
+    width: 100px;
+  }
+}
+
+@keyframes equal {
+  0% {
+    background: hsl(203, 87%, 34%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    height: 100px;
+    width: 100px;
+  }
+
+  45%, 50% {
+    background: hsl(201, 79%, 46%);
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+    height: min(400px, 90vw);
+    width: min(400px, 90vw);
+  }
+
+  95%, 100% {
+    background: hsl(203, 87%, 34%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    height: 100px;
+    width: 100px;
+  }
+}
