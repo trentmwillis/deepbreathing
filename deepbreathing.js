@@ -1,62 +1,100 @@
-const animations = {
-  equal: [
-    ['Breathe In', 'breatheIn', 5],
-    ['Hold', 'holdIn', 2],
-    ['Breathe Out', 'breatheOut', 5],
-  ],
-  half478: [
-    ['Breathe In', 'breatheIn', 2],
-    ['Hold', 'holdIn', 3.5],
-    ['Breathe Out', 'breatheOut', 4],
-  ],
-  full478: [
-    ['Breathe In', 'breatheIn', 4],
-    ['Hold', 'holdIn', 7],
-    ['Breathe Out', 'breatheOut', 8],
-  ]
-};
+window.addEventListener('DOMContentLoaded', async () => {
+  const instructionEl = document.getElementById('instruction');
+  const animatronEl = document.getElementById('animatron');
 
-const playAnimation = (el, animation, duration) => new Promise(resolve => {
-  el.style.animation = null;
+  const animations = {
+    equal: {
+      intro: [
+        ['equal breathing will focus on inhaling and exhaling for the same length of time', 'holdOut', 5],
+        ['find a comfortable position to sit or stand', 'holdOut', 4],
+        ['breathe in and out through your nose and feel your belly expand', 'holdOut', 5],
+        ['ready?', 'holdOut', 3],
+      ],
+      loop: [
+        ['Breathe In', 'breatheIn', 4],
+        ['Hold', 'holdIn', 2],
+        ['Breathe Out', 'breatheOut', 4],
+      ]
+    },
+    half478: {
+      intro: [
+        ['4/7/8 breathing involves inhaling for 4 seconds, holding for 7 seconds, and exhaling for 8 seconds', 'holdOut', 6],
+        ['this version is for half that amount of time', 'holdOut', 4],
+        ['find a comfortable position to sit or stand', 'holdOut', 4],
+        ['breathe in through your nose and out through your mouth', 'holdOut', 5],
+        ['ready?', 'holdOut', 3],
+      ],
+      loop: [
+        ['Breathe In', 'breatheIn', 2],
+        ['Hold', 'holdIn', 3.5],
+        ['Breathe Out', 'breatheOut', 4],
+      ]
+    },
+    full478: {
+      intro: [
+        ['4/7/8 breathing involves inhaling for 4 seconds, holding for 7 seconds, and exhaling for 8 seconds', 'holdOut', 6],
+        ['if that is too long, try the half version', 'holdOut', 4],
+        ['find a comfortable position to sit or stand', 'holdOut', 4],
+        ['breathe in through your nose and out through your mouth', 'holdOut', 5],
+        ['ready?', 'holdOut', 3],
+      ],
+      loop: [
+        ['Breathe In', 'breatheIn', 4],
+        ['Hold', 'holdIn', 7],
+        ['Breathe Out', 'breatheOut', 8],
+      ]
+    }
+  };
 
-  requestAnimationFrame(() => {
-    const animationend = (event) => {
-      el.removeEventListener('animationend', animationend);
-      resolve();
-    };
-    el.addEventListener('animationend', animationend);
-    el.style.animation = `${animation} ${duration}s forwards`;
+  const playAnimation = (el, animation, duration) => new Promise(resolve => {
+    el.style.animation = null;
+    void el.offsetWidth;
+
+    requestAnimationFrame(() => {
+      const animationend = () => {
+        el.removeEventListener('animationend', animationend);
+        resolve();
+      };
+      el.addEventListener('animationend', animationend);
+      el.style.animation = `${animation} ${duration}s ease-in-out forwards`;
+    });
   });
-});
 
-const instructionEl = document.getElementById('instruction');
-const animatronEl = document.getElementById('animatron');
-const animationStep = (step) => {
-  const [instructionText, animation, duration] = step;
-  instructionEl.textContent = instructionText;
-  return Promise.all([
-    playAnimation(instructionEl, "fadeIn", 0.5)
-    .then(() => playAnimation(instructionEl, "pause", duration - 1))
-    .then(() => playAnimation(instructionEl, "fadeOut", 0.5)),
-    playAnimation(animatronEl, animation, duration),
-  ]);
-};
+  const animationStep = (step) => {
+    const [instructionText, animation, duration] = step;
+    instructionEl.textContent = instructionText;
+    return Promise.all([
+      playAnimation(instructionEl, "fadeIn", 0.5)
+        .then(() => playAnimation(instructionEl, "pause", duration - 1))
+        .then(() => playAnimation(instructionEl, "fadeOut", 0.5)),
+      playAnimation(animatronEl, animation, duration),
+    ]);
+  };
 
-const startAnimation = async (steps) => {
-  while (steps.length) {
-    const step = steps.shift();
-    await animationStep(step);
-    steps.push(step);
-  }
-};
+  const startAnimation = async (animation) => {
+    for (let i = 0; i < animation.intro.length; i++) {
+      await animationStep(animation.intro[i]);
+    }
 
-document.querySelector('.control-panel').addEventListener('click', (event) => {
-  const { target } = event;
-  const control = target.closest('.control');
-  if (control) {
+    const steps = animation.loop.slice();
+    while (steps.length) {
+      const step = steps.shift();
+      await animationStep(step);
+      steps.push(step);
+    }
+  };
+
+  const clickControl = (control) => {
     const currentlyActiveControl = document.querySelector('.control.is-active');
     if (currentlyActiveControl) currentlyActiveControl.classList.remove('is-active');
     control.classList.add('is-active');
     startAnimation(animations[control.dataset.animation]);
-  }
+  };
+
+  const handleClick = (click) => {
+      const control = click.target.closest('.control');
+      if (control) clickControl(control);
+  };
+
+  document.querySelector('.control-panel').addEventListener('click', handleClick);
 });

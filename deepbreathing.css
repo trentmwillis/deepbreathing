@@ -59,11 +59,9 @@ body {
 
 .instruction {
   align-items: center;
-  animation-duration: 3s;
-  animation-fill-mode: forwards;
-  animation-name: fadeIn;
   color: hsl(216, 33%, 97%);
   display: flex;
+  flex-direction: column;
   font-size: 1.5rem;
   height: 50%;
   justify-content: center;
@@ -77,9 +75,13 @@ body {
   text-transform: lowercase;
 }
 
+.note {
+  font-size: 1rem;
+  max-width: 20rem;
+}
+
 .animatron {
   /* The vars / custom properties get set in JS land */
-  animation: var(--animation) var(--duration) ease-in-out infinite;
   background: linear-gradient(to bottom, hsl(195, 100%, 95%), hsl(195, 100%, 85%));
   border-radius: 50% 50% 50% 50% / 100% 100% 0% 0%;
   transform: translateZ(0);
@@ -110,10 +112,12 @@ body {
 }
 
 .controls {
+  animation: fadeIn 1s 1s forwards;
   display: flex;
   justify-content: space-evenly;
   list-style: none;
   margin: 0;
+  opacity: 0;
   padding: 0;
 }
 
@@ -159,11 +163,13 @@ body {
 }
 
 .footnote {
+  animation: fadeIn 1s 1s forwards;
   color: hsl(211, 13%, 65%);
   font-size: 0.8rem;
   line-height: 1rem;
   margin: 0;
   margin-top: 2rem;
+  opacity: 0;
   text-align: center;
 }
 
