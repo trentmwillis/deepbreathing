@@ -28,21 +28,18 @@ body {
 
 .titlebar {
   background: hsl(201, 79%, 46%);
+  display: flex;
+  justify-content: center;
   width: 100%;
 }
 
 .title {
-  color: hsl(216, 33%, 97%);
-  font-size: 1.5rem;
+  color: hsl(195, 97%, 75%);
+  font-size: 1rem;
   letter-spacing: 0.2rem;
   margin: 1rem;
-  text-align: center;
+  margin-right: -0.2rem;
   text-transform: lowercase;
-
-  /* Webkit-specific styles for gradient text */
-  background: -webkit-linear-gradient(hsl(216, 33%, 97%), hsl(197, 92%, 61%));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 /**
@@ -52,22 +49,42 @@ body {
 .stage {
   align-items: center;
   background: hsl(201, 79%, 46%);
-  background-image:
-    url("./background.svg"),
-    linear-gradient(to bottom, hsl(201, 79%, 46%), hsl(195, 100%, 85%));
+  background-image: linear-gradient(to bottom, hsl(201, 79%, 46%), hsl(195, 100%, 85%));
   display: flex;
   flex: 1;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
   width: 100%;
 }
 
+.instruction {
+  align-items: center;
+  animation-duration: 3s;
+  animation-fill-mode: forwards;
+  animation-name: fadeIn;
+  color: hsl(216, 33%, 97%);
+  display: flex;
+  font-size: 1.5rem;
+  height: 50%;
+  justify-content: center;
+  letter-spacing: 0.2rem;
+  max-width: 30rem;
+  margin-left: 1rem;
+  margin-right: 0.8rem;
+  opacity: 0;
+  padding: 1rem;
+  text-align: center;
+  text-transform: lowercase;
+}
+
 .animatron {
-  /* These get set in JS land */
+  /* The vars / custom properties get set in JS land */
   animation: var(--animation) var(--duration) ease-in-out infinite;
-  box-shadow:
-    0 14px 28px hsla(201, 79%, 46%, 0.25),
-    0 10px 10px hsla(201, 79%, 46%, 0.22);
+  background: linear-gradient(to bottom, hsl(195, 100%, 95%), hsl(195, 100%, 85%));
+  border-radius: 50% 50% 50% 50% / 100% 100% 0% 0%;
   transform: translateZ(0);
+  height: 10vw;
+  width: 100%;
 }
 
 /**
@@ -77,9 +94,9 @@ body {
 .control-panel {
   background: linear-gradient(hsl(216, 33%, 97%), hsl(210, 16%, 82%));
   box-shadow:
-    0 -14px 28px hsla(201, 79%, 46%, 0.25),
-    0 -10px 10px hsla(201, 79%, 46%, 0.25);
-  padding: 2rem 2rem 3rem;
+    0 -28px 28px hsla(201, 79%, 46%, 0.25),
+    0 -20px 10px hsla(201, 79%, 46%, 0.25);
+  padding: 2rem 2rem 1rem;
   position: relative;
   width: 100%;
 }
@@ -102,15 +119,10 @@ body {
 
 .control {
   align-items: center;
-  background: none;
+  background: hsl(197, 92%, 61%);
   border: none;
   border-radius: 100%;
-  box-shadow:
-    9px 9px 9px rgba(0, 0, 0, 0.06),
-    -9px -9px 9px rgba(255, 255, 255, 0.6),
-    inset 5px 5px 5px rgba(0, 0, 0, 0.06),
-    inset -5px -5px 5px rgba(255, 255, 255, 0.2);
-  color: white;
+  color: hsl(195, 100%, 95%);
   cursor: pointer;
   display: flex;
   font: inherit;
@@ -118,43 +130,118 @@ body {
   justify-content: center;
   padding: 0.5rem;
   position: relative;
-  transition: background-color 0.5s, color 0.5s;
+  text-transform: lowercase;
+  transition: background-color 0.5s;
   width: 4rem;
 }
 
+.control:hover {
+  background: hsl(201, 79%, 46%);
+}
+
 .control:focus {
-  outline: none;
+  background: hsl(201, 79%, 46%);
+  outline: none; /* TODO: Outline when tabbing */
 }
 
-.control::before {
-  background-color: hsl(197, 92%, 61%);
-  border-radius: 50%;
-  box-shadow:
-    inset 1px 2px 4px hsl(195, 97%, 75%),
-    inset -1px -2px 4px hsl(199, 84%, 55%);
-  content: '';
-  height: 3.7rem;
-  left: 50%;
-  margin: -1.85rem 0 0 -1.85rem;
-  position: absolute;
-  top: 50%;
-  width: 3.7rem;
-}
-
-.control:focus::before,
-.control:hover::before {
-  background-color: hsl(199, 84%, 55%);
-}
-
-.control:active::before,
-.control.is-active::before {
-  background-color: hsl(199, 84%, 55%);
-  box-shadow:
-    inset -1px -2px 4px hsl(197, 92%, 61%),
-    inset 1px 2px 4px hsl(201, 79%, 46%);
+.control:active,
+.control.is-active {
+  background: hsl(204, 96%, 27%);
 }
 
 .control_text {
   line-height: 1.2;
   position: relative;
+}
+
+.control_text.no-descenders {
+  margin-bottom: -1px;
+}
+
+.footnote {
+  color: hsl(211, 13%, 65%);
+  font-size: 0.8rem;
+  line-height: 1rem;
+  margin: 0;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.footnote > a {
+  border-bottom: 1px dotted;
+  color: inherit;
+  display: inline-block;
+  line-height: 1;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footnote > a:focus,
+.footnote > a:hover {
+  color: hsl(209, 20%, 25%);
+  outline: none;
+}
+
+.twitter-icon {
+  display: inline-block;
+  margin-left: 2px;
+  position: relative;
+  top: 2px;
+}
+
+/**
+ * Instruction animations
+ */
+
+ @keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes pause {
+  from, to { opacity: 1; }
+}
+
+/**
+ * Breathing animations
+ */
+
+@keyframes breatheIn {
+  from {
+    height: 10vw;
+  }
+
+  to {
+    height: 50%;
+    height: min(50vw, 50%);
+  }
+}
+
+@keyframes holdIn {
+  from, to {
+    height: 50%;
+    height: min(50vw, 50%);
+  }
+}
+
+@keyframes breatheOut {
+  from {
+    height: 50%;
+    height: min(50vw, 50%);
+  }
+
+  to {
+    height: 10vw;
+  }
+}
+
+@keyframes holdOut {
+  from, to {
+    height: 10vw;
+  }
 }
