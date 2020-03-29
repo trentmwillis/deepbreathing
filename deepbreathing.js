@@ -1,4 +1,6 @@
 window.addEventListener('DOMContentLoaded', async () => {
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/service-worker.js');
+
   const instructionEl = document.getElementById('instruction');
   const animatronEl = document.getElementById('animatron');
 
