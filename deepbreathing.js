@@ -15,7 +15,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         ['Hold', 'holdIn', 2],
         ['Breathe Out', 'breatheOut', 4],
       ],
-      times: 1
+      times: 10
     },
     half478: {
       intro: [
