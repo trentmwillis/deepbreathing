@@ -151,6 +151,12 @@ body {
 .control:active,
 .control.is-active {
   background: hsl(204, 96%, 27%);
+  cursor: wait;
+}
+
+.control[disabled] {
+  background: hsl(211, 10%, 53%);
+  cursor: not-allowed;
 }
 
 .control_text {

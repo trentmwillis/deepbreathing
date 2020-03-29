@@ -14,7 +14,8 @@ window.addEventListener('DOMContentLoaded', async () => {
         ['Breathe In', 'breatheIn', 4],
         ['Hold', 'holdIn', 2],
         ['Breathe Out', 'breatheOut', 4],
-      ]
+      ],
+      times: 1
     },
     half478: {
       intro: [
@@ -28,7 +29,8 @@ window.addEventListener('DOMContentLoaded', async () => {
         ['Breathe In', 'breatheIn', 2],
         ['Hold', 'holdIn', 3.5],
         ['Breathe Out', 'breatheOut', 4],
-      ]
+      ],
+      times: 10
     },
     full478: {
       intro: [
@@ -42,7 +44,8 @@ window.addEventListener('DOMContentLoaded', async () => {
         ['Breathe In', 'breatheIn', 4],
         ['Hold', 'holdIn', 7],
         ['Breathe Out', 'breatheOut', 8],
-      ]
+      ],
+      times: 7
     }
   };
 
@@ -60,35 +63,53 @@ window.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  const animationStep = (step) => {
+  const animationStep = (step, skipFadeOut = false) => {
     const [instructionText, animation, duration] = step;
     instructionEl.textContent = instructionText;
     return Promise.all([
       playAnimation(instructionEl, "fadeIn", 0.5)
         .then(() => playAnimation(instructionEl, "pause", duration - 1))
-        .then(() => playAnimation(instructionEl, "fadeOut", 0.5)),
+        .then(() => skipFadeOut || playAnimation(instructionEl, "fadeOut", 0.5)),
       playAnimation(animatronEl, animation, duration),
     ]);
   };
 
   const startAnimation = async (animation) => {
+    await playAnimation(instructionEl, "fadeOut", 0.5);
+
     for (let i = 0; i < animation.intro.length; i++) {
       await animationStep(animation.intro[i]);
     }
 
     const steps = animation.loop.slice();
-    while (steps.length) {
-      const step = steps.shift();
-      await animationStep(step);
-      steps.push(step);
+    for (let i = 0; i < animation.times; i++) {
+      for (let j = 0; j < steps.length; j++) {
+        await animationStep(steps[j]);
+      }
     }
+
+    await animationStep(['All done, good job! Feel free to start another pattern if you want', 'holdOut', 2], true);
   };
 
-  const clickControl = (control) => {
-    const currentlyActiveControl = document.querySelector('.control.is-active');
-    if (currentlyActiveControl) currentlyActiveControl.classList.remove('is-active');
+  const disableControls = (disable) => {
+    document.querySelectorAll('.control').forEach(control => {
+      if (disable) {
+        control.setAttribute('disabled', true);
+      } else {
+        control.removeAttribute('disabled');
+      }
+    });
+  };
+
+  const clickControl = async (control) => {
+    if (control.getAttribute('disabled') || control.classList.contains('is-active')) return;
+
+    disableControls(true);
+    control.removeAttribute('disabled');
     control.classList.add('is-active');
-    startAnimation(animations[control.dataset.animation]);
+    await startAnimation(animations[control.dataset.animation]);
+    control.classList.remove('is-active');
+    disableControls(false);
   };
 
   const handleClick = (click) => {
