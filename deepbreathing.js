@@ -1,3 +1,5 @@
+import { BrownNoise } from './src/brown-noise.js';
+
 window.addEventListener('DOMContentLoaded', async () => {
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/service-worker.js');
 
@@ -77,6 +79,9 @@ window.addEventListener('DOMContentLoaded', async () => {
   };
 
   const startAnimation = async (animation) => {
+    const sound = new BrownNoise();
+    sound.play();
+
     await playAnimation(instructionEl, "fadeOut", 0.5);
 
     for (let i = 0; i < animation.intro.length; i++) {
@@ -91,6 +96,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 
     await animationStep(['All done, good job! Feel free to start another pattern if you want', 'holdOut', 2], true);
+    sound.stop();
   };
 
   const disableControls = (disable) => {
