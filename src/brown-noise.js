@@ -25,6 +25,8 @@
  * And, of course, I spent a lot of time on the MDN pages for various Web Audio APIs.
  */
 
+const RAMP_SECONDS = 5;
+
 function createBrownNoise(audioContext) {
   // Start with some basic white noise...
   const noise = new AudioWorkletNode(audioContext, "white-noise-generator");
@@ -63,6 +65,7 @@ function createBrownNoise(audioContext) {
 export class BrownNoise {
   constructor() {
     this.audioContext = null;
+    this.volume = null;
   }
 
   async play() {
@@ -82,8 +85,9 @@ export class BrownNoise {
     const merger = audioContext.createChannelMerger();
 
     // Create a GainNode to control the output volume...
-    const gain = audioContext.createGain();
-    gain.gain.setValueAtTime(5, audioContext.currentTime);
+    const volume = this.volume = audioContext.createGain();
+    volume.gain.setValueAtTime(0, audioContext.currentTime);
+    volume.gain.linearRampToValueAtTime(5, audioContext.currentTime + RAMP_SECONDS);
 
     // Connect all the nodes together...
     leftBrownNoise.connect(leftChannel);
@@ -92,12 +96,18 @@ export class BrownNoise {
     rightBrownNoise.connect(rightChannel);
     rightChannel.connect(merger, 0, 1);
 
-    merger.connect(gain);
-    gain.connect(audioContext.destination);
+    merger.connect(volume);
+    volume.connect(audioContext.destination);
   }
 
   stop() {
-    this.audioContext.close();
-    this.audioContext = null;
+    this.volume.gain.setValueAtTime(5, this.audioContext.currentTime);
+    this.volume.gain.linearRampToValueAtTime(0, this.audioContext.currentTime + RAMP_SECONDS);
+
+    setTimeout(() => {
+      this.audioContext.close();
+      this.audioContext = null;
+      this.volume = null;
+    }, (RAMP_SECONDS + 1) * 1000);
   }
 }
