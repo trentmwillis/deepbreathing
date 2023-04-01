@@ -6,6 +6,9 @@ window.addEventListener('DOMContentLoaded', async () => {
   const instructionEl = document.getElementById('instruction');
   const animatronEl = document.getElementById('animatron');
 
+  const sound = new BrownNoise();
+  await sound.init();
+
   const animations = {
     equal: {
       intro: [
@@ -79,7 +82,6 @@ window.addEventListener('DOMContentLoaded', async () => {
   };
 
   const startAnimation = async (animation) => {
-    const sound = new BrownNoise();
     sound.play();
 
     await playAnimation(instructionEl, "fadeOut", 0.5);

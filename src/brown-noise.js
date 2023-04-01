@@ -63,13 +63,17 @@ function createBrownNoise(audioContext) {
 }
 
 export class BrownNoise {
+  #audioContext;
+  #volume;
+
   constructor() {
-    this.audioContext = null;
-    this.volume = null;
+    this.#audioContext = new AudioContext();
+    this.#volume = this.#audioContext.createGain();
   }
 
-  async play() {
-    const audioContext = (this.audioContext = new AudioContext());
+  async init() {
+    const audioContext = this.#audioContext;
+    const volume = this.#volume;
 
     // Load the base white noise generator...
     await audioContext.audioWorklet.addModule(new URL('./src/white-noise-generator.js', location.origin));
@@ -84,11 +88,6 @@ export class BrownNoise {
     // Create a channel merger to combine the left and right channels into stereo...
     const merger = audioContext.createChannelMerger();
 
-    // Create a GainNode to control the output volume...
-    const volume = this.volume = audioContext.createGain();
-    volume.gain.setValueAtTime(0, audioContext.currentTime);
-    volume.gain.linearRampToValueAtTime(5, audioContext.currentTime + RAMP_SECONDS);
-
     // Connect all the nodes together...
     leftBrownNoise.connect(leftChannel);
     leftChannel.connect(merger, 0, 0);
@@ -100,14 +99,20 @@ export class BrownNoise {
     volume.connect(audioContext.destination);
   }
 
-  stop() {
-    this.volume.gain.setValueAtTime(5, this.audioContext.currentTime);
-    this.volume.gain.linearRampToValueAtTime(0, this.audioContext.currentTime + RAMP_SECONDS);
+  async play() {
+    await this.#audioContext.resume();
 
-    setTimeout(() => {
-      this.audioContext.close();
-      this.audioContext = null;
-      this.volume = null;
-    }, (RAMP_SECONDS + 1) * 1000);
+    this.#volume.gain.setValueAtTime(0, this.#audioContext.currentTime);
+    this.#volume.gain.linearRampToValueAtTime(5, this.#audioContext.currentTime + RAMP_SECONDS);
+  }
+
+  async stop() {
+    this.#volume.gain.setValueAtTime(5, this.#audioContext.currentTime);
+    this.#volume.gain.linearRampToValueAtTime(0, this.#audioContext.currentTime + RAMP_SECONDS);
+
+    return new Promise(resolve => setTimeout(async () => {
+      await this.#audioContext.suspend();
+      resolve();
+    }, (RAMP_SECONDS + 1) * 1000));
   }
 }
