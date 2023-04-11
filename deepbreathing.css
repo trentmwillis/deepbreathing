@@ -27,9 +27,10 @@ body {
  */
 
 .titlebar {
+  align-items: center;
   background: hsl(201, 79%, 46%);
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   width: 100%;
 }
 
@@ -38,6 +39,67 @@ body {
   font-size: 1rem;
   letter-spacing: 0.2rem;
   margin: 1rem;
+  margin-right: 0.8rem;
+  text-transform: lowercase;
+}
+
+/**
+ * Toggle Switch
+ */
+
+.toggle {
+  --toggle-padding: 2px;
+  --toggle-size: 16px;
+
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  position: relative;
+}
+
+.toggle_input {
+  height: 0;
+  opacity: 0;
+  position: absolute;
+  width: 0;
+}
+
+.toggle_slider {
+  background-color: hsla(216, 33%, 97%, 50%);
+  border-radius: var(--toggle-size);
+  height: var(--toggle-size);
+  position: relative;
+  transition: .4s;
+  width: calc(var(--toggle-size) * 2);
+}
+
+.toggle_slider:before {
+  background-color: hsl(216, 33%, 97%);
+  border-radius: 100%;
+  bottom: var(--toggle-padding);
+  content: "";
+  height: calc(var(--toggle-size) - (2 * var(--toggle-padding)));
+  left: var(--toggle-padding);
+  position: absolute;
+  transition: .4s;
+  width: calc(var(--toggle-size) - (2 * var(--toggle-padding)));
+}
+
+.toggle_input:checked + .toggle_slider {
+  background-color: hsl(32, 92%, 61%);
+}
+
+.toggle_input:checked + .toggle_slider:before {
+  background-color: hsl(216, 33%, 97%);
+  transform: translateX(var(--toggle-size));
+}
+
+.toggle_text {
+  color: hsl(195, 97%, 75%);
+  font-size: 1rem;
+  letter-spacing: 0.2rem;
+  margin: 1rem;
+  margin-left: 0.5rem;
   margin-right: 0.8rem;
   text-transform: lowercase;
 }

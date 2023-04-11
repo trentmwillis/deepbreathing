@@ -3,11 +3,20 @@ import { BrownNoise } from './src/brown-noise.js';
 window.addEventListener('DOMContentLoaded', async () => {
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/service-worker.js');
 
-  const instructionEl = document.getElementById('instruction');
-  const animatronEl = document.getElementById('animatron');
-
   const sound = new BrownNoise();
   await sound.init();
+
+  const noiseToggleEl = document.getElementById('noise-toggle');
+  noiseToggleEl.addEventListener('change', () => {
+    if (noiseToggleEl.checked) {
+      sound.play();
+    } else {
+      sound.stop();
+    }
+  });
+
+  const instructionEl = document.getElementById("instruction");
+  const animatronEl = document.getElementById("animatron");
 
   const animations = {
     equal: {
@@ -82,8 +91,6 @@ window.addEventListener('DOMContentLoaded', async () => {
   };
 
   const startAnimation = async (animation) => {
-    sound.play();
-
     await playAnimation(instructionEl, "fadeOut", 0.5);
 
     for (let i = 0; i < animation.intro.length; i++) {
@@ -98,7 +105,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 
     await animationStep(['All done, good job! Feel free to start another pattern if you want', 'holdOut', 2], true);
-    sound.stop();
   };
 
   const disableControls = (disable) => {
